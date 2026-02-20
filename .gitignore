@@ -1,0 +1,8 @@
+# API anahtarları ve gizli bilgiler (asla commit etmeyin)
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.xlsx
+*.csv
