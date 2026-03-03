@@ -77,11 +77,23 @@ if st.button("📥 Excel oluştur", type="primary"):
     sadece_google = kaynak_secim == "Sadece Google API"
 
     if sadece_google or google_dahil:
-        from dotenv import load_dotenv
-        load_dotenv()
+        # Önce Streamlit secrets'ten dene (Cloud ortamı)
+        secret_key = None
+        try:
+            secret_key = st.secrets.get("GOOGLE_PLACES_API_KEY", None)
+        except Exception:
+            secret_key = None
+
+        if secret_key:
+            os.environ["GOOGLE_PLACES_API_KEY"] = secret_key
+        else:
+            # Lokal geliştirme: .env dosyasından oku
+            from dotenv import load_dotenv
+            load_dotenv()
+
         api_key = os.getenv("GOOGLE_PLACES_API_KEY", "")
         if not api_key or api_key == "your_api_key_here":
-            st.warning("Google API kullanmak için .env dosyasında GOOGLE_PLACES_API_KEY tanımlayın.")
+            st.warning("Google API kullanmak için Streamlit secrets veya .env dosyasında GOOGLE_PLACES_API_KEY tanımlayın.")
             if not sadece_google:
                 st.info("Şimdilik sadece OSM ile devam ediliyor.")
                 google_dahil = False
