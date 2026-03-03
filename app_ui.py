@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 # Proje kökü
 PROJE_KOK = Path(__file__).resolve().parent
@@ -145,5 +146,19 @@ if st.button("📥 Excel oluştur", type="primary"):
             "🗺️ Tümünü Google Maps'te rota olarak aç (ilk 25 durak)",
             rota_url,
             help="Firmalar sırayla (HBF'ye yakından uzağa) tek haritada rota olarak açılır.",
+        )
+        components.html(
+            f"""
+            <iframe
+                width="100%"
+                height="600"
+                style="border:0"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="{rota_url}">
+            </iframe>
+            """,
+            height=600,
         )
     st.caption("Excel’de Google_Maps_Link, North_Data_Link ve Website sütunları tıklanabilir linktir.")
